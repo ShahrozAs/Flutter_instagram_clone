@@ -80,4 +80,81 @@ class storeData {
     }
     return resp;
   }
+
+
+
+
+
+  
+  Future<String> saveCommentData(
+      {
+        // required String comment,
+      required String docId,
+      
+     }) async {
+    String resp = "Some Error Occured";
+    try {
+      if (docId.isNotEmpty || docId.isNotEmpty) {
+        // final id=Timestamp.now();
+        // String imageUrl = await uploadImageToStorage('${id}+postImage', file);
+        // // databaseReference.child(user.email!).set({
+        // //   'name': name,
+        // //   'username': username,
+        // //   'bio': bio,
+        // //   'imageLink': imageUrl
+        // // });
+      FirebaseFirestore.instance
+        .collection("UsersPost")
+        .doc(docId)
+        .collection("Comments")
+        .add({
+      "commentText": "null",
+      "commentBy": "null",
+      "commentTime": Timestamp.now(),
+    });
+        resp = "Success";
+      }
+    } catch (e) {
+      resp = e.toString();
+    }
+    return resp;
+  }
+
 }
+
+
+
+  Future<String> saveCommentData(
+      {
+        // required String comment,
+      required String docId,
+      
+     }) async {
+    String resp = "Some Error Occured";
+    try {
+      if (docId.isNotEmpty || docId.isNotEmpty) {
+        // final id=Timestamp.now();
+        // String imageUrl = await uploadImageToStorage('${id}+postImage', file);
+        // // databaseReference.child(user.email!).set({
+        // //   'name': name,
+        // //   'username': username,
+        // //   'bio': bio,
+        // //   'imageLink': imageUrl
+        // // });
+      FirebaseFirestore.instance
+        .collection("UsersPost")
+        .doc(docId)
+        .collection("Comments")
+        .add({
+      "commentText": "",
+      "commentBy": "",
+      "commentTime": Timestamp.now(),
+    });
+        resp = "Success";
+      }
+    } catch (e) {
+      resp = e.toString();
+    }
+    return resp;
+  }
+
