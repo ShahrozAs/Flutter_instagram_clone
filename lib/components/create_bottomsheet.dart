@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 // import 'package:instagram_mad/Crud_operations/realtime_database.dart';
 
@@ -53,6 +54,12 @@ void createBottomSheet(BuildContext context){
               children: [
                 IconButton(onPressed: (){}, icon: Icon(Icons.menu_open_sharp)),
                 Text("Closed Friends",style: TextStyle(fontWeight: FontWeight.bold),),
+              ],
+            ),
+            Row(
+              children: [
+                IconButton(onPressed: ()async{await FirebaseAuth.instance.signOut();}, icon: Icon(Icons.logout)),
+                Text("Logout",style: TextStyle(fontWeight: FontWeight.bold),),
               ],
             ),
             

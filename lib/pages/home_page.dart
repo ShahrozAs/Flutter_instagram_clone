@@ -74,7 +74,8 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: Colors.white,
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent, // Making AppBar transparent
+        backgroundColor: Colors.white,
+       // Making AppBar transparent
 
         title: Row(
           children: [
@@ -100,7 +101,7 @@ class _HomePageState extends State<HomePage> {
               width: 20,
             ),
           ),
-          IconButton(onPressed: signOut, icon: Icon(Icons.logout)),
+          
         ],
       ),
       body: StreamBuilder(
@@ -114,7 +115,7 @@ class _HomePageState extends State<HomePage> {
           }
           if (snapshot.connectionState == ConnectionState.waiting) {
             return Center(
-              child: CircularProgressIndicator(),
+              child: Container(),
             );
           }
           if (snapshot.data == null) {
@@ -137,7 +138,7 @@ class _HomePageState extends State<HomePage> {
                         (BuildContext context, AsyncSnapshot<int> snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         // Return a placeholder while fetching like count
-                        return CircularProgressIndicator();
+                        return Container();
                       } else if (snapshot.hasError) {
                         // Handle error fetching like count
                         return Text('Error fetching likes');
@@ -330,7 +331,7 @@ class _HomePageState extends State<HomePage> {
       ),
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
-        selectedItemColor: Colors.blue,
+        selectedItemColor: Color(0xffFD1D59),
         unselectedItemColor: Colors.grey,
         showSelectedLabels: true,
         showUnselectedLabels: true,

@@ -6,6 +6,9 @@ import 'package:image_picker/image_picker.dart';
 import 'package:instagram_clone/components/create_bottomsheet.dart';
 import 'package:instagram_clone/helper/checkpost.dart';
 import 'package:instagram_clone/pages/editProfile_page.dart';
+import 'package:instagram_clone/pages/home_page.dart';
+import 'package:instagram_clone/pages/search_page.dart';
+import 'package:instagram_clone/pages/uploadPost_page.dart';
 import 'package:instagram_clone/pages/upload_image.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -77,8 +80,7 @@ class _ProfilePageState extends State<ProfilePage> {
       //     ],
       //   ),
       // ),
-      body: SingleChildScrollView(
-        child: Padding(
+      body: Padding(
           padding: const EdgeInsets.only(top:10.0),
           child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             future: getUserDetails(),
@@ -115,7 +117,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                                 Text(
-                                   user!['username']!=null?user!['username']:"username",
+                                   user?['username']??"username",
                                   // user!['username'],
                                   style: TextStyle(
                                       fontSize: 20, fontWeight: FontWeight.w700),
@@ -164,7 +166,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       child: CircleAvatar(
                                         radius: 50,
                                         foregroundImage: NetworkImage(
-                                           '${user['imageLink']!=null?user['imageLink']:"https://www.moroccoupclose.com/uwagreec/2018/12/default_avatar-2048x2048.png"}'
+                                           '${user?['imageLink']??"https://www.moroccoupclose.com/uwagreec/2018/12/default_avatar-2048x2048.png"}'
                                           //  "${user['imageLink']}"
                                         ),
                                       ),
@@ -234,7 +236,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                         child: Padding(
                                           padding: const EdgeInsets.only(left:10.0),
                                           child: Text(
-                                          user['name']!=null? user['name']:"Name",
+                                          user?['name']??"Name",
                                             style: TextStyle(
                                                 fontSize: 12.5,
                                                 color: Colors.black45,
@@ -261,7 +263,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                           padding: const EdgeInsets.only(left:10.0),
                                           child: Text(
                                             // "yuio",
-                                              user['bio']!=null? user['bio']:"bio",
+                                              user?['bio']??"bio",
                                             style: TextStyle(
                                                 fontSize: 12.5,
                                                 color: Colors.black45,
@@ -314,7 +316,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                       ),
                                       child: TextButton(
                                           onPressed: () {
-                                            Navigator.push(context,MaterialPageRoute(builder: (context) => ShowPost(userName: user['username']),));
+                                            Navigator.push(context,MaterialPageRoute(builder: (context) => ShowPost(userName: user?['username']??""),));
                                           },
                                           child: Text(
                                             "Share profile",
@@ -358,7 +360,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   ),
                                 ),
                               ),
-                              Padding(padding: EdgeInsets.all(0),child: ShowPost(userName: user['username']),),
+                              Padding(padding: EdgeInsets.all(0),child: ShowPost(userName: user?['username']??""),),
         
                             ]),
                       ),
@@ -373,7 +375,78 @@ class _ProfilePageState extends State<ProfilePage> {
             },
           ),
         ),
+      
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: Color(0xffFD1D59),
+        unselectedItemColor: Colors.grey,
+        showSelectedLabels: true,
+        showUnselectedLabels: true,
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search),
+            label: 'Search',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.add_circle),
+            label: 'Upload',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.video_collection),
+            label: 'Videos',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: 'Profile',
+          ),
+        ],
+
+        currentIndex: 4, // Set the initial index to Home
+        onTap: (index) {
+          // Handle navigation on item tap
+          switch (index) {
+            case 0:
+           Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => HomePage(),
+                  ));
+              break;
+            case 1:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => SearchPage(),
+                  ));
+              // Navigator.pushNamed(context, searchScreenRoute);
+              break;
+            case 2:
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => UploadPostPage(),
+                  ));
+              // Navigator.pushNamed(context, uploadScreenRoute);
+              break;
+            case 3:
+              // Navigator.pushNamed(context, videosScreenRoute);
+              break;
+            case 4:
+              // Navigator.pushNamed(context, profileScreenRoute);
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => ProfilePage(),
+                  ));
+              break;
+          }
+        },
       ),
+
     );
   }
 }

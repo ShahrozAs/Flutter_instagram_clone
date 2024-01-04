@@ -44,38 +44,9 @@ try {
       appBar: AppBar(
         // backgroundColor: Theme.of(context).colorScheme.background,
         // Adding gradient background to AppBar
-        backgroundColor: Colors.transparent, // Making AppBar transparent
-        flexibleSpace: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color.fromRGBO(254, 249, 243, 1),
-                Color.fromRGBO(235, 243, 254, 1),
-                Color.fromRGBO(238, 251, 242, 1),
-              ],
-              stops: [0.0, 0.35, 1.0],
-            ),
-          ),
-        ),
-        elevation: 0, // Removing AppBar's shadow
+       //AppBar's shadow
       ),
-      body: SingleChildScrollView(
-        child: Container(
-          decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.centerLeft,
-              end: Alignment.centerRight,
-              colors: [
-                Color.fromRGBO(254, 249, 243, 1),
-                Color.fromRGBO(235, 243, 254, 1),
-                Color.fromRGBO(238, 251, 242, 1),
-              ],
-              stops: [0.0, 0.35, 1.0],
-            ),
-          ),
-          child: Center(
+      body: Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -189,8 +160,8 @@ try {
               ],
             ),
           ),
-        ),
-      ),
+        
+      
     );
   }
 }

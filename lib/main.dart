@@ -4,6 +4,7 @@ import 'package:instagram_clone/auth/auth.dart';
 import 'package:instagram_clone/auth/login_or_registor_page.dart';
 import 'package:instagram_clone/firebase_options.dart';
 import 'package:instagram_clone/pages/login_page.dart';
+import 'package:instagram_clone/pages/splash.dart';
 import 'package:instagram_clone/theme/dark_mode.dart';
 import 'package:instagram_clone/theme/light_mode.dart';
 
@@ -21,10 +22,15 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(
+      seedColor: Color(0xffFD1D59),
+      // ···
+      brightness: Brightness.light,
+    ),
+      ),
       title: 'Flutter Demo',
-      theme:lightMode,
-      darkTheme: darkMode,
-      home:const AuthPage(),
+      home:const SplashScreen(),
     );
   }
 }
