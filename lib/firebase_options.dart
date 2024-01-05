@@ -50,19 +50,21 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAC0QHjP9UrmBMqFjwvhRT_U1S6zu9pT8s',
-    appId: '1:629802773757:android:fe6387267e4840db03a294',
-    messagingSenderId: '629802773757',
-    projectId: 'facebook---clone-3fdad',
-    storageBucket: 'facebook---clone-3fdad.appspot.com',
+    apiKey: 'AIzaSyBwjXy5PJUDnJJEdwhzBOcaXPFNh0AN65w',
+    appId: '1:321093815508:android:e727f6b58cdcb67c613f41',
+    messagingSenderId: '321093815508',
+    projectId: 'instagram-clone-b9eab',
+    databaseURL: 'https://instagram-clone-b9eab-default-rtdb.firebaseio.com',
+    storageBucket: 'instagram-clone-b9eab.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyBSE3FLxI17GyI1oViG15z3uppaEnz4RWM',
-    appId: '1:629802773757:ios:3aa6dc7c0474fb1903a294',
-    messagingSenderId: '629802773757',
-    projectId: 'facebook---clone-3fdad',
-    storageBucket: 'facebook---clone-3fdad.appspot.com',
+    apiKey: 'AIzaSyAaOOc1V0kV1-atpTiYpzQeEJU1jUEEteM',
+    appId: '1:321093815508:ios:21d185e521539112613f41',
+    messagingSenderId: '321093815508',
+    projectId: 'instagram-clone-b9eab',
+    databaseURL: 'https://instagram-clone-b9eab-default-rtdb.firebaseio.com',
+    storageBucket: 'instagram-clone-b9eab.appspot.com',
     iosBundleId: 'com.example.instagramClone',
   );
 }

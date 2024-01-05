@@ -10,6 +10,9 @@ import 'package:instagram_clone/pages/search_page.dart';
 import 'package:instagram_clone/pages/uploadPost_page.dart';
 import 'package:instagram_clone/pages/upload_image.dart';
 import 'package:instagram_clone/pages/profile_page.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
+
 
 const String homeScreenRoute = '/';
 const String searchScreenRoute = '/search';
@@ -23,41 +26,86 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  late SharedPreferences prefs;
+  void initState() {
+  super.initState();
+  initializeSharedPreferences();
+}
+Future<void> initializeSharedPreferences() async {
+  prefs = await SharedPreferences.getInstance();
+  loadLikedPosts();
+}
+
+void loadLikedPosts() {
+  // Retrieve liked post IDs from SharedPreferences
+  List<String>? likedPostIds = prefs.getStringList('likedPosts');
+
+  // Update likedPosts map based on the retrieved IDs
+  if (likedPostIds != null) {
+    setState(() {
+      likedPostIds.forEach((postId) {
+        likedPosts[postId] = true;
+      });
+    });
+  }
+}
   Map<String, bool> likedPosts = {};
   Map<String, int> likeCounts = {};
   void signOut() {
     FirebaseAuth.instance.signOut();
   }
 
+  String formatDate(DateTime dateTime) {
+  final formatter = DateFormat('dd/MM/yyyy hh:mm a');
+  return formatter.format(dateTime);
+}
+
+
   bool isLiked = false;
   //  bool isLiked = false;
 
   // ... (other methods remain the same)
 
-  Future<void> toggleLike(String postId) async {
-    final user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      final postRef =
-          FirebaseFirestore.instance.collection('UsersPost').doc(postId);
+ Future<void> toggleLike(String postId) async {
+  final user = FirebaseAuth.instance.currentUser;
+  if (user != null) {
+    final postRef =
+        FirebaseFirestore.instance.collection('UsersPost').doc(postId);
 
-      final likeRef = postRef.collection('likes').doc(user.uid);
-      final doc = await likeRef.get();
+    final likeRef = postRef.collection('likes').doc(user.uid);
+    final doc = await likeRef.get();
 
-      if (doc.exists) {
-        // User already liked the post, so unlike it
-        await likeRef.delete();
-        setState(() {
-          likedPosts[postId] = false; // Update the liked status in the map
-        });
-      } else {
-        // User hasn't liked the post, so like it
-        await likeRef.set({'liked': true});
-        setState(() {
-          likedPosts[postId] = true; // Update the liked status in the map
-        });
-      }
+    if (doc.exists) {
+      // User already liked the post, so unlike it
+      await likeRef.delete();
+      setState(() {
+        likedPosts[postId] = false; // Update the liked status in the map
+      });
+      removeLikedPostId(postId); // Remove from SharedPreferences
+    } else {
+      // User hasn't liked the post, so like it
+      await likeRef.set({'liked': true});
+      setState(() {
+        likedPosts[postId] = true; // Update the liked status in the map
+      });
+      addLikedPostId(postId); // Add to SharedPreferences
     }
   }
+}
+
+void addLikedPostId(String postId) {
+  // Add the liked post ID to SharedPreferences
+  List<String>? likedPostIds = prefs.getStringList('likedPosts') ?? [];
+  likedPostIds.add(postId);
+  prefs.setStringList('likedPosts', likedPostIds);
+}
+
+void removeLikedPostId(String postId) {
+  // Remove the unliked post ID from SharedPreferences
+  List<String>? likedPostIds = prefs.getStringList('likedPosts') ?? [];
+  likedPostIds.remove(postId);
+  prefs.setStringList('likedPosts', likedPostIds);
+}
 
   Future<int> getLikeCount(String postId) async {
     final postRef =
@@ -253,13 +301,13 @@ class _HomePageState extends State<HomePage> {
                                                       docId);
                                                 },
                                                 icon: Icon(
-                                                    Icons.comment_outlined),
+                                                    Icons.comment_outlined,size: 30,),
                                               ),
                                               IconButton(
                                                 onPressed: () {
                                                   // Implement share functionality
                                                 },
-                                                icon: Icon(Icons.send),
+                                                icon: Icon(Icons.send,size: 30,),
                                               ),
                                             ]),
                                           ),
@@ -267,7 +315,7 @@ class _HomePageState extends State<HomePage> {
                                             onPressed: () {
                                               // Implement save functionality
                                             },
-                                            icon: Icon(Icons.bookmark_border),
+                                            icon: Icon(Icons.bookmark_border,size: 30,),
                                           ),
                                         ],
                                       ),
@@ -312,7 +360,7 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                       SizedBox(height: 8.0),
                                       Text(
-                                        'Posted on 21 Dec 2023', // Replace with post date
+                                         formatDate(user['timestamp'].toDate()), // Replace with post date
                                         style: TextStyle(color: Colors.grey),
                                       ),
                                     ],

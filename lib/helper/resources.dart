@@ -28,7 +28,8 @@ class storeData {
     String resp = "Some Error Occured";
     try {
       if (name.isNotEmpty || bio.isNotEmpty) {
-        String imageUrl = await uploadImageToStorage('profileImage', file);
+         final id1=Timestamp.now();
+        String imageUrl = await uploadImageToStorage('${id1}+profileImage', file);
         // databaseReference.child(user.email!).set({
         //   'name': name,
         //   'username': username,
