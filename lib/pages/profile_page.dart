@@ -122,7 +122,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                   style: TextStyle(
                                       fontSize: 20, fontWeight: FontWeight.w700),
                                 ),
-                                Icon(Icons.keyboard_arrow_down_sharp),
+
+                                IconButton(
+                                    onPressed: ()=>createBottomSheet(context), icon: Icon(Icons.keyboard_arrow_down_rounded,color: Colors.black,)),
                               ],
                             ),
                           ),

@@ -104,34 +104,18 @@ try {
                 ),
                 Container(
                   child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(
-                            color: Color.fromRGBO(0, 100, 224, 1),
-                            width: 2,
-                          ),
-                        ),
-                        margin: const EdgeInsets.only(
-                          left: 20,
-                          right: 20,
-                          bottom: 20,
-                        ),
-                        child: GestureDetector(
-                          onTap: widget.onTap,
+                      GestureDetector(
+                        onTap: widget.onTap,
+                        child: Padding(
+                          padding: const EdgeInsets.all(25.0),
                           child: Container(
-                            decoration: BoxDecoration(border: Border.all(width: 1,color: Colors.white)),
+                            width: double.infinity,
                             height: 50,
-                            child: Card(
-                              borderOnForeground: false,
-        
-                              elevation: 1,
-                              child: Center(child: Text("Create new Account?")),
-                            ),
-                          )
-                            
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),border: Border.all(color: Colors.blue,width: 2)),
+                            child: Center(child: Text("Create new Account?",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue))),
+                          ),
                         ),
                       ),
                       Container(

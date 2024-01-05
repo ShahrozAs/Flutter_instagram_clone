@@ -165,34 +165,17 @@ class _SignupScreenState extends State<SignupScreen> {
                 Container(
                   child: Column(
                     children: [
-                      Container(
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(30),
-                          border: Border.all(
-                            color: Color.fromRGBO(0, 100, 224, 1),
-                            width: 2,
+                          GestureDetector(
+                        onTap: widget.onTap,
+                        child: Padding(
+                          padding: const EdgeInsets.all(25.0),
+                          child: Container(
+                            width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(borderRadius: BorderRadius.circular(25),border: Border.all(color: Colors.blue,width: 2)),
+                            child: Center(child: Text("Already have an Account?",style: TextStyle(fontWeight: FontWeight.bold,color: Colors.blue))),
                           ),
                         ),
-                        margin: const EdgeInsets.only(
-                          left: 20,
-                          right: 20,
-                          bottom: 20,
-                        ),
-                        child: GestureDetector(
-                            onTap: widget.onTap,
-                            child: Container(
-                              decoration: BoxDecoration(
-                                  border:
-                                      Border.all(width: 1, color: Colors.white)),
-                              height: 50,
-                              child: Card(
-                                borderOnForeground: false,
-                                elevation: 1,
-                                child: Center(
-                                    child: Text("Already have an account?")),
-                              ),
-                            )),
                       ),
                       Container(
                         margin: EdgeInsets.only(bottom: 20),

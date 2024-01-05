@@ -127,8 +127,8 @@ void removeLikedPostId(String postId) {
 
         title: Row(
           children: [
-            Image.network(
-              "https://th.bing.com/th/id/R.825e4d7b40faa8f9c51da0c73d6254d8?rik=RVfV80ATb%2boUhg&pid=ImgRaw&r=0",
+            Image.asset(
+              "assets/images/instalogo.png",
               width: 110,
               height: 100,
             ),
@@ -144,8 +144,8 @@ void removeLikedPostId(String postId) {
           ),
           Padding(
             padding: const EdgeInsets.only(right: 10),
-            child: Image.network(
-              "https://th.bing.com/th/id/OIP.Kb8XWL899wpZKDS8LosySgHaHk?rs=1&pid=ImgDetMain",
+            child: Image.asset(
+              "assets/images/messager-r.png",
               width: 20,
             ),
           ),
@@ -377,6 +377,7 @@ void removeLikedPostId(String postId) {
           );
         },
       ),
+      
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: Colors.white,
         selectedItemColor: Color(0xffFD1D59),
