@@ -1,18 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/components/CustomBottomNavigationBar.dart';
 import 'package:instagram_clone/components/create_bottomsheetComments.dart';
 import 'package:instagram_clone/components/full_image.dart';
 import 'package:instagram_clone/components/like_button.dart';
 import 'package:instagram_clone/helper/helper_functions.dart';
 import 'package:instagram_clone/helper/resources.dart';
+import 'package:instagram_clone/pages/SavedPostPage.dart';
 import 'package:instagram_clone/pages/search_page.dart';
 import 'package:instagram_clone/pages/uploadPost_page.dart';
 import 'package:instagram_clone/pages/upload_image.dart';
 import 'package:instagram_clone/pages/profile_page.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:intl/intl.dart';
-
+import 'package:convex_bottom_bar/convex_bottom_bar.dart';
 
 const String homeScreenRoute = '/';
 const String searchScreenRoute = '/search';
@@ -26,29 +28,40 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  int _currentIndex = 0;
   late SharedPreferences prefs;
   void initState() {
-  super.initState();
-  initializeSharedPreferences();
-}
-Future<void> initializeSharedPreferences() async {
-  prefs = await SharedPreferences.getInstance();
-  loadLikedPosts();
-}
-
-void loadLikedPosts() {
-  // Retrieve liked post IDs from SharedPreferences
-  List<String>? likedPostIds = prefs.getStringList('likedPosts');
-
-  // Update likedPosts map based on the retrieved IDs
-  if (likedPostIds != null) {
-    setState(() {
-      likedPostIds.forEach((postId) {
-        likedPosts[postId] = true;
-      });
-    });
+    super.initState();
+    initializeSharedPreferences();
   }
-}
+
+  // bool isSaved = false;
+
+  // void _toggleSaved() {
+  //   setState(() {
+  //     isSaved = !isSaved;
+  //   });
+  // }
+
+  Future<void> initializeSharedPreferences() async {
+    prefs = await SharedPreferences.getInstance();
+    loadLikedPosts();
+  }
+
+  void loadLikedPosts() {
+    // Retrieve liked post IDs from SharedPreferences
+    List<String>? likedPostIds = prefs.getStringList('likedPosts');
+
+    // Update likedPosts map based on the retrieved IDs
+    if (likedPostIds != null) {
+      setState(() {
+        likedPostIds.forEach((postId) {
+          likedPosts[postId] = true;
+        });
+      });
+    }
+  }
+
   Map<String, bool> likedPosts = {};
   Map<String, int> likeCounts = {};
   void signOut() {
@@ -56,56 +69,52 @@ void loadLikedPosts() {
   }
 
   String formatDate(DateTime dateTime) {
-  final formatter = DateFormat('dd/MM/yyyy hh:mm a');
-  return formatter.format(dateTime);
-}
-
+    final formatter = DateFormat('dd/MM/yyyy hh:mm a');
+    return formatter.format(dateTime);
+  }
 
   bool isLiked = false;
-  //  bool isLiked = false;
 
-  // ... (other methods remain the same)
+  Future<void> toggleLike(String postId) async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      final postRef =
+          FirebaseFirestore.instance.collection('UsersPost').doc(postId);
 
- Future<void> toggleLike(String postId) async {
-  final user = FirebaseAuth.instance.currentUser;
-  if (user != null) {
-    final postRef =
-        FirebaseFirestore.instance.collection('UsersPost').doc(postId);
+      final likeRef = postRef.collection('likes').doc(user.uid);
+      final doc = await likeRef.get();
 
-    final likeRef = postRef.collection('likes').doc(user.uid);
-    final doc = await likeRef.get();
-
-    if (doc.exists) {
-      // User already liked the post, so unlike it
-      await likeRef.delete();
-      setState(() {
-        likedPosts[postId] = false; // Update the liked status in the map
-      });
-      removeLikedPostId(postId); // Remove from SharedPreferences
-    } else {
-      // User hasn't liked the post, so like it
-      await likeRef.set({'liked': true});
-      setState(() {
-        likedPosts[postId] = true; // Update the liked status in the map
-      });
-      addLikedPostId(postId); // Add to SharedPreferences
+      if (doc.exists) {
+        // User already liked the post, so unlike it
+        await likeRef.delete();
+        setState(() {
+          likedPosts[postId] = false; // Update the liked status in the map
+        });
+        removeLikedPostId(postId); // Remove from SharedPreferences
+      } else {
+        // User hasn't liked the post, so like it
+        await likeRef.set({'liked': true});
+        setState(() {
+          likedPosts[postId] = true; // Update the liked status in the map
+        });
+        addLikedPostId(postId); // Add to SharedPreferences
+      }
     }
   }
-}
 
-void addLikedPostId(String postId) {
-  // Add the liked post ID to SharedPreferences
-  List<String>? likedPostIds = prefs.getStringList('likedPosts') ?? [];
-  likedPostIds.add(postId);
-  prefs.setStringList('likedPosts', likedPostIds);
-}
+  void addLikedPostId(String postId) {
+    // Add the liked post ID to SharedPreferences
+    List<String>? likedPostIds = prefs.getStringList('likedPosts') ?? [];
+    likedPostIds.add(postId);
+    prefs.setStringList('likedPosts', likedPostIds);
+  }
 
-void removeLikedPostId(String postId) {
-  // Remove the unliked post ID from SharedPreferences
-  List<String>? likedPostIds = prefs.getStringList('likedPosts') ?? [];
-  likedPostIds.remove(postId);
-  prefs.setStringList('likedPosts', likedPostIds);
-}
+  void removeLikedPostId(String postId) {
+    // Remove the unliked post ID from SharedPreferences
+    List<String>? likedPostIds = prefs.getStringList('likedPosts') ?? [];
+    likedPostIds.remove(postId);
+    prefs.setStringList('likedPosts', likedPostIds);
+  }
 
   Future<int> getLikeCount(String postId) async {
     final postRef =
@@ -123,7 +132,7 @@ void removeLikedPostId(String postId) {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         backgroundColor: Colors.white,
-       // Making AppBar transparent
+        // Making AppBar transparent
 
         title: Row(
           children: [
@@ -138,6 +147,7 @@ void removeLikedPostId(String postId) {
         actions: [
           IconButton(
             onPressed: () {
+              Navigator.push(context, MaterialPageRoute(builder: (context) => SavedPostPage(),));
               // Implement action (e.g., Search functionality)
             },
             icon: Icon(Icons.favorite_border_rounded, color: Colors.black),
@@ -149,7 +159,6 @@ void removeLikedPostId(String postId) {
               width: 20,
             ),
           ),
-          
         ],
       ),
       body: StreamBuilder(
@@ -250,7 +259,7 @@ void removeLikedPostId(String postId) {
                                   padding: const EdgeInsets.all(10.0),
                                   child: Text(user['caption'] != null
                                       ? user['caption']
-                                      : " "),
+                                      : " ",style: TextStyle(fontSize: 15),),
                                 ),
                                 // Replace with post image
                                 InkWell(
@@ -292,37 +301,71 @@ void removeLikedPostId(String postId) {
                                                   await toggleLike(docId);
                                                 },
                                               ),
-                                              IconButton(
-                                                onPressed: () async {
-                                                  // String resp=await storeData().saveCommentData (docId: docId);
+                                              // IconButton(
+                                              //   onPressed: () async {
+                                              //     createBottomSheetComments(
+                                              //         context,
+                                              //         user['name'],
+                                              //         docId);
+                                              //     // String resp=await storeData().saveCommentData (docId: docId);
+                                              //   },
+                                              //   icon: Icon(
+                                              //     Icons.comment_outlined,
+                                              //     size: 30,
+                                              //   ),
+                                              // ),
+                                                SizedBox(width: 5,),
+                                             InkWell(
+                                              onTap: () async{
                                                   createBottomSheetComments(
                                                       context,
                                                       user['name'],
                                                       docId);
-                                                },
-                                                icon: Icon(
-                                                    Icons.comment_outlined,size: 30,),
-                                              ),
-                                              IconButton(
-                                                onPressed: () {
-                                                  // Implement share functionality
-                                                },
-                                                icon: Icon(Icons.send,size: 30,),
-                                              ),
+                                              },
+                                              child: Image.asset('assets/images/message.png',width: 30,height: 30),
+                                             ),
+                                             SizedBox(width: 10,),
+                                              Image.asset('assets/images/send.png',width: 35,height: 35,)
+                                              // IconButton(
+                                              //   onPressed: () {
+                                              //     // Implement share functionality
+                                              //   },
+                                              //   icon: Icon(
+                                              //     Icons.send,
+                                              //     size: 30,
+                                              //   ),
+                                              // ),
                                             ]),
                                           ),
                                           IconButton(
-                                            onPressed: () {
-                                              // Implement save functionality
+                                            onPressed: () async {
+                                              String resp = await storeData()
+                                                  .savedPostPage(
+                                                name: user['name'],
+                                                userImage: user['userImage'],
+                                                caption: user['caption'],
+                                                PostImage: user['imageLink'],
+                                              );
+                                              // _toggleSaved();
                                             },
-                                            icon: Icon(Icons.bookmark_border,size: 30,),
+                                            icon: Icon(
+                                              // isSaved
+                                              //     ? Icons.bookmark
+                                              //     : Icons.bookmark_border,
+                                              // color: isSaved
+                                              //     ? Colors.red
+                                              //     : Colors.black,
+                                              Icons.bookmark_border_outlined,
+                                              size: 30,
+                                            ),
                                           ),
                                         ],
                                       ),
                                       SizedBox(height: 8.0),
                                       Text(
                                         '${likeCounts[docId]} likes',
-                                style: TextStyle(fontWeight: FontWeight.bold),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
                                       SizedBox(height: 4.0),
                                       Row(
@@ -360,7 +403,8 @@ void removeLikedPostId(String postId) {
                                       ),
                                       SizedBox(height: 8.0),
                                       Text(
-                                         formatDate(user['timestamp'].toDate()), // Replace with post date
+                                        formatDate(user['timestamp']
+                                            .toDate()), // Replace with post date
                                         style: TextStyle(color: Colors.grey),
                                       ),
                                     ],
@@ -377,72 +421,8 @@ void removeLikedPostId(String postId) {
           );
         },
       ),
-      
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Color(0xffFD1D59),
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle),
-            label: 'Upload',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.video_collection),
-            label: 'Videos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-
-        currentIndex: 0, // Set the initial index to Home
-        onTap: (index) {
-          // Handle navigation on item tap
-          switch (index) {
-            case 0:
-              Navigator.pushNamed(context, homeScreenRoute);
-              break;
-            case 1:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchPage(),
-                  ));
-              // Navigator.pushNamed(context, searchScreenRoute);
-              break;
-            case 2:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UploadPostPage(),
-                  ));
-              // Navigator.pushNamed(context, uploadScreenRoute);
-              break;
-            case 3:
-              Navigator.pushNamed(context, videosScreenRoute);
-              break;
-            case 4:
-              // Navigator.pushNamed(context, profileScreenRoute);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
-                  ));
-              break;
-          }
-        },
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 0,
       ),
     );
   }

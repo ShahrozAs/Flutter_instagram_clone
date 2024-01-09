@@ -62,45 +62,6 @@ class ShowPost extends StatelessWidget {
               );
             },
           );
-              // List<Widget> postWidgets = snapshot.data!.docs.map((post) {
-              //   Map<String, dynamic> postData =
-              //       post.data() as Map<String, dynamic>;
-              //   String imageUrl = postData['imageLink'] ?? '';
-         
-              //   return GestureDetector(
-              //     onTap: () {
-              //       // Handle post click
-              //       Navigator.push(
-              //         context,
-              //         MaterialPageRoute(
-              //           builder: (context) => FullImagePreview(
-              //             imageUrl: imageUrl,
-              //           ),
-              //         ),
-              //       );
-              //     },
-              //     child: Image.network(
-              //       imageUrl,
-              //       fit: BoxFit.cover,
-              //       height: 200.0,
-              //     ),
-              //   );
-              // }).toList();
-         
-              // return Column(
-              //   crossAxisAlignment: CrossAxisAlignment.start,
-              //   children: [
-              //     // Other widgets can be added before the post widgets
-              //     // SizedBox(height: 20),
-              //     // Text('Your other widgets here'),
-              //     // SizedBox(height: 20),
-              //     Wrap(
-              //       spacing: 2.0,
-              //       runSpacing: 2.0,
-              //       children: postWidgets,
-              //     ),
-              //   ],
-              // );
             },
           ),
                ),

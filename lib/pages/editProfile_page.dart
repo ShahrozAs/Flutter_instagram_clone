@@ -185,7 +185,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
                     child: Text('Save'),
                   ),
                   style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.lightBlue),
+                    foregroundColor: Colors.white,
+                      backgroundColor: Colors.blue),
+                      
                 ),
               ),
             ],

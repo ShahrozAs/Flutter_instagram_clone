@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/components/CustomBottomNavigationBar.dart';
 import 'package:instagram_clone/helper/resources.dart';
 import 'package:instagram_clone/pages/home_page.dart';
 import 'package:instagram_clone/pages/profile_page.dart';
@@ -18,9 +19,9 @@ class UploadPostPage extends StatefulWidget {
 }
 
 class _UploadPostPageState extends State<UploadPostPage> {
-
-String userName="user";
-String? userImage="https://www.moroccoupclose.com/uwagreec/2018/12/default_avatar-2048x2048.png";
+  String userName = "user";
+  String? userImage =
+      "https://www.moroccoupclose.com/uwagreec/2018/12/default_avatar-2048x2048.png";
   final User? currentUser = FirebaseAuth.instance.currentUser!;
 
   Future<DocumentSnapshot<Map<String, dynamic>>> getUserDetails() async {
@@ -30,10 +31,9 @@ String? userImage="https://www.moroccoupclose.com/uwagreec/2018/12/default_avata
         .get();
   }
 
-
-
   void savePost() async {
-    print("qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
+    print(
+        "qqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqqq");
     showDialog(
       context: context,
       builder: (context) {
@@ -47,13 +47,17 @@ String? userImage="https://www.moroccoupclose.com/uwagreec/2018/12/default_avata
     String resp = await storeData().savePostData(
         name: userName,
         userImage: userImage!,
-        caption: captionController.text, file: _image!
-        );
-     
-        print(captionController.text);
+        caption: captionController.text,
+        file: _image!);
 
-     Navigator.pop(context);
-     Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage(),));
+    print(captionController.text);
+
+    Navigator.pop(context);
+    Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomePage(),
+        ));
   }
 
   Uint8List? _image;
@@ -69,226 +73,94 @@ String? userImage="https://www.moroccoupclose.com/uwagreec/2018/12/default_avata
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
-      appBar: AppBar(title: const Text("Upload image"),actions: [IconButton(onPressed: (){
-        FirebaseAuth.instance.signOut();
-      }, icon: Icon(Icons.logout)),],),
+      appBar: AppBar(
+        title: const Text("Upload image"),
+       
+      ),
       body: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-               future: getUserDetails(),
-        builder: (context, snapshot) {
-          //during loading
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Text("Error :${snapshot.error}"),
-            );
-          } else if (snapshot.hasData) {
-            Map<String, dynamic>? user = snapshot.data!.data();
-            userName=user!['username'];
-            userImage=user['imageLink'];
-            return  Container(
-          margin: EdgeInsets.all(20),
-          child: Center(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              children: [
-                Container(
-                  child: TextField(
-                    controller: captionController,
-                    decoration: InputDecoration(
-                      prefixIcon: Icon(Icons.edit),
-                      border: OutlineInputBorder(),
-                      labelText: "Write a caption...",
-                    ),
-                  ),
-                  
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                InkWell(
-                  onTap: selectImage,
-                  child: _image != null
-                      ? Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 400,
-                            color: Colors.grey[400],
-                            child: Image.memory((_image!)),
-                          ))
-                      : Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Container(
-                            width: double.infinity,
-                            height: 400,
-                            color: Colors.grey[400],
-                            child: Icon(Icons.file_upload_outlined),
+          future: getUserDetails(),
+          builder: (context, snapshot) {
+            //during loading
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const Center(
+                child: CircularProgressIndicator(),
+              );
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text("Error :${snapshot.error}"),
+              );
+            } else if (snapshot.hasData) {
+              Map<String, dynamic>? user = snapshot.data!.data();
+              userName = user!['username'];
+              userImage = user['imageLink'];
+              return Container(
+                margin: EdgeInsets.all(20),
+                child: Center(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Container(
+                        child: TextField(
+                          controller: captionController,
+                          decoration: InputDecoration(
+                            prefixIcon: Icon(Icons.edit),
+                            border: OutlineInputBorder(),
+                            labelText: "Write a caption...",
                           ),
                         ),
-                ),
-                SizedBox(
-                  height: 15,
-                ),
-                Container(
-                    child: ElevatedButton(
-                  onPressed: savePost,
-                  child: Padding(
-                    padding: const EdgeInsets.all(15.0),
-                    child: const Text("Post"),
+                      ),
+                      SizedBox(
+                        height: 30,
+                      ),
+                      InkWell(
+                        onTap: selectImage,
+                        child: _image != null
+                            ? Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 400,
+                                  color: Colors.grey[400],
+                                  child: Image.memory((_image!)),
+                                ))
+                            : Padding(
+                                padding: const EdgeInsets.all(10.0),
+                                child: Container(
+                                  width: double.infinity,
+                                  height: 400,
+                                  color: Colors.grey[400],
+                                  child: Icon(Icons.file_upload_outlined),
+                                ),
+                              ),
+                      ),
+                      SizedBox(
+                        height: 15,
+                      ),
+                      Container(
+                          child: ElevatedButton(
+                        onPressed: savePost,
+                        child: Padding(
+                          padding: const EdgeInsets.all(15.0),
+                          child: const Text("Post"),
+                        ),
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            foregroundColor: Colors.white),
+                      ))
+                    ],
                   ),
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue,
-                      foregroundColor: Colors.white),
-                ))
-              ],
-            ),
+                ),
+              );
+            } else {
+              return Center(
+                child: Text("No Data Found"),
+              );
+            }
+          }
           ),
-        );
-        
-          }
-           else {
-            return Center(
-              child: Text("No Data Found"),
-            );
-          }
-        }
-
-
-        // child: Container(
-        //   margin: EdgeInsets.all(20),
-        //   child: Center(
-        //     child: Column(
-        //       crossAxisAlignment: CrossAxisAlignment.end,
-        //       children: [
-        //         Container(
-        //           child: TextField(
-        //             controller: captionController,
-        //             decoration: InputDecoration(
-        //               prefixIcon: Icon(Icons.edit),
-        //               border: OutlineInputBorder(),
-        //               labelText: "Write a caption...",
-        //             ),
-        //           ),
-                  
-        //         ),
-        //         SizedBox(
-        //           height: 30,
-        //         ),
-        //         InkWell(
-        //           onTap: selectImage,
-        //           child: _image != null
-        //               ? Padding(
-        //                   padding: const EdgeInsets.all(10.0),
-        //                   child: Container(
-        //                     width: double.infinity,
-        //                     height: 400,
-        //                     color: Colors.grey[400],
-        //                     child: Image.memory((_image!)),
-        //                   ))
-        //               : Padding(
-        //                   padding: const EdgeInsets.all(10.0),
-        //                   child: Container(
-        //                     width: double.infinity,
-        //                     height: 400,
-        //                     color: Colors.grey[400],
-        //                     child: Icon(Icons.file_upload_outlined),
-        //                   ),
-        //                 ),
-        //         ),
-        //         SizedBox(
-        //           height: 15,
-        //         ),
-        //         Container(
-        //             child: ElevatedButton(
-        //           onPressed: savePost,
-        //           child: Padding(
-        //             padding: const EdgeInsets.all(15.0),
-        //             child: const Text("Post"),
-        //           ),
-        //           style: ElevatedButton.styleFrom(
-        //               backgroundColor: Colors.blue,
-        //               foregroundColor: Colors.white),
-        //         ))
-        //       ],
-        //     ),
-        //   ),
-        // ),
+      bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 2,
       ),
-      
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Color(0xffFD1D59),
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle),
-            label: 'Upload',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.video_collection),
-            label: 'Videos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-
-        currentIndex: 2, // Set the initial index to Home
-        onTap: (index) {
-          // Handle navigation on item tap
-          switch (index) {
-            case 0:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ));
-              break;
-            case 1:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchPage(),
-                  ));
-              // Navigator.pushNamed(context, searchScreenRoute);
-              break;
-            case 2:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UploadPostPage(),
-                  ));
-              // Navigator.pushNamed(context, uploadScreenRoute);
-              break;
-            case 3:
-              Navigator.pushNamed(context, videosScreenRoute);
-              break;
-            case 4:
-              // Navigator.pushNamed(context, profileScreenRoute);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
-                  ));
-              break;
-          }
-        },
-      ),
-
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:instagram_clone/components/CustomBottomNavigationBar.dart';
 import 'package:instagram_clone/components/full_image.dart';
 import 'package:instagram_clone/helper/helper_functions.dart';
 import 'package:instagram_clone/pages/home_page.dart';
@@ -81,76 +82,79 @@ class _SearchPageState extends State<SearchPage> {
         },
       ),
       
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Color(0xffFD1D59),
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle),
-            label: 'Upload',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.video_collection),
-            label: 'Videos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-
-        currentIndex: 1, // Set the initial index to Home
-        onTap: (index) {
-          // Handle navigation on item tap
-          switch (index) {
-            case 0:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ));
-              break;
-            case 1:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchPage(),
-                  ));
-              // Navigator.pushNamed(context, searchScreenRoute);
-              break;
-            case 2:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UploadPostPage(),
-                  ));
-              // Navigator.pushNamed(context, uploadScreenRoute);
-              break;
-            case 3:
-              //Navigator.pushNamed(context, videosScreenRoute);
-              break;
-            case 4:
-              // Navigator.pushNamed(context, profileScreenRoute);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
-                  ));
-              break;
-          }
-        },
+       bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 1,
       ),
+      // bottomNavigationBar: BottomNavigationBar(
+      //   backgroundColor: Colors.white,
+      //   selectedItemColor: Color(0xffFD1D59),
+      //   unselectedItemColor: Colors.grey,
+      //   showSelectedLabels: true,
+      //   showUnselectedLabels: true,
+      //   items: const <BottomNavigationBarItem>[
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.home),
+      //       label: 'Home',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.search),
+      //       label: 'Search',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.add_circle),
+      //       label: 'Upload',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.video_collection),
+      //       label: 'Videos',
+      //     ),
+      //     BottomNavigationBarItem(
+      //       icon: Icon(Icons.person),
+      //       label: 'Profile',
+      //     ),
+      //   ],
+
+      //   currentIndex: 1, // Set the initial index to Home
+      //   onTap: (index) {
+      //     // Handle navigation on item tap
+      //     switch (index) {
+      //       case 0:
+      //         Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => HomePage(),
+      //             ));
+      //         break;
+      //       case 1:
+      //         Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => SearchPage(),
+      //             ));
+      //         // Navigator.pushNamed(context, searchScreenRoute);
+      //         break;
+      //       case 2:
+      //         Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => UploadPostPage(),
+      //             ));
+      //         // Navigator.pushNamed(context, uploadScreenRoute);
+      //         break;
+      //       case 3:
+      //         //Navigator.pushNamed(context, videosScreenRoute);
+      //         break;
+      //       case 4:
+      //         // Navigator.pushNamed(context, profileScreenRoute);
+      //         Navigator.push(
+      //             context,
+      //             MaterialPageRoute(
+      //               builder: (context) => ProfilePage(),
+      //             ));
+      //         break;
+      //     }
+      //   },
+      // ),
 
     );
   }

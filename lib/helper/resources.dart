@@ -28,8 +28,9 @@ class storeData {
     String resp = "Some Error Occured";
     try {
       if (name.isNotEmpty || bio.isNotEmpty) {
-         final id1=Timestamp.now();
-        String imageUrl = await uploadImageToStorage('${id1}+profileImage', file);
+        final id1 = Timestamp.now();
+        String imageUrl =
+            await uploadImageToStorage('${id1}+profileImage', file);
         // databaseReference.child(user.email!).set({
         //   'name': name,
         //   'username': username,
@@ -50,16 +51,15 @@ class storeData {
     return resp;
   }
 
-  
   Future<String> savePostData(
       {required String caption,
-       required String name,
-       required String userImage,
+      required String name,
+      required String userImage,
       required Uint8List file}) async {
     String resp = "Some Error Occured";
     try {
       if (caption.isNotEmpty || caption.isNotEmpty) {
-        final id=Timestamp.now();
+        final id = Timestamp.now();
         String imageUrl = await uploadImageToStorage('${id}+postImage', file);
         // databaseReference.child(user.email!).set({
         //   'name': name,
@@ -69,9 +69,9 @@ class storeData {
         // });
         await _firestore.collection('UsersPost').add({
           'name': name,
-          'caption':caption,
+          'caption': caption,
           'imageLink': imageUrl,
-          'userImage':userImage,
+          'userImage': userImage,
           'timestamp': Timestamp.now(),
         });
         resp = "Success";
@@ -82,37 +82,29 @@ class storeData {
     return resp;
   }
 
-
-
-
-
-  
-  Future<String> saveCommentData(
-      {
-        // required String comment,
-      required String docId,
-      
-     }) async {
+  Future<String> savedPostPage(
+      {required String caption,
+      required String name,
+      required String userImage,
+      required String PostImage}) async {
     String resp = "Some Error Occured";
     try {
-      if (docId.isNotEmpty || docId.isNotEmpty) {
-        // final id=Timestamp.now();
-        // String imageUrl = await uploadImageToStorage('${id}+postImage', file);
-        // // databaseReference.child(user.email!).set({
-        // //   'name': name,
-        // //   'username': username,
-        // //   'bio': bio,
-        // //   'imageLink': imageUrl
-        // // });
-      FirebaseFirestore.instance
-        .collection("UsersPost")
-        .doc(docId)
-        .collection("Comments")
-        .add({
-      "commentText": "null",
-      "commentBy": "null",
-      "commentTime": Timestamp.now(),
-    });
+      if (caption.isNotEmpty || caption.isNotEmpty) {
+        // final id = Timestamp.now();
+        // databaseReference.child(user.email!).set({
+        //   'name': name,
+        //   'username': username,
+        //   'bio': bio,
+        //   'imageLink': imageUrl
+        // });
+        await _firestore.collection('UsersSavedPost').add({
+          'email':user.email!,
+          'name': name,
+          'caption': caption,
+          'imageLink': PostImage,
+          'userImage': userImage,
+          'timestamp': Timestamp.now(),
+        });
         resp = "Success";
       }
     } catch (e) {
@@ -122,40 +114,3 @@ class storeData {
   }
 
 }
-
-
-
-  Future<String> saveCommentData(
-      {
-        // required String comment,
-      required String docId,
-      
-     }) async {
-    String resp = "Some Error Occured";
-    try {
-      if (docId.isNotEmpty || docId.isNotEmpty) {
-        // final id=Timestamp.now();
-        // String imageUrl = await uploadImageToStorage('${id}+postImage', file);
-        // // databaseReference.child(user.email!).set({
-        // //   'name': name,
-        // //   'username': username,
-        // //   'bio': bio,
-        // //   'imageLink': imageUrl
-        // // });
-      FirebaseFirestore.instance
-        .collection("UsersPost")
-        .doc(docId)
-        .collection("Comments")
-        .add({
-      "commentText": "",
-      "commentBy": "",
-      "commentTime": Timestamp.now(),
-    });
-        resp = "Success";
-      }
-    } catch (e) {
-      resp = e.toString();
-    }
-    return resp;
-  }
-

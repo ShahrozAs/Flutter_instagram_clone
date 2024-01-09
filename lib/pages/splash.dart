@@ -1,28 +1,39 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:instagram_clone/auth/auth.dart';
-
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({super.key});
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
 }
 
-
 class _SplashScreenState extends State<SplashScreen> {
-    void initState() {
-
+  @override
+  void initState() {
     super.initState();
-    Timer(const Duration(seconds: 3), () { Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AuthPage(),));});
+    _loadSplash();
   }
+
+  _loadSplash() async {
+    // Simulating a delay of 3 seconds before navigating to AuthPage
+    await Future.delayed(const Duration(seconds: 3));
+
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => AuthPage()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: Image.asset('assets/images/logor.png',height: 70,width: 70,),
+        child: Image.asset(
+          'assets/images/logor.png',
+          height: 70,
+          width: 70,
+        ),
       ),
     );
   }

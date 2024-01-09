@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:instagram_clone/components/CustomBottomNavigationBar.dart';
 import 'package:instagram_clone/components/create_bottomsheet.dart';
 import 'package:instagram_clone/helper/checkpost.dart';
 import 'package:instagram_clone/pages/editProfile_page.dart';
@@ -378,76 +379,10 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.white,
-        selectedItemColor: Color(0xffFD1D59),
-        unselectedItemColor: Colors.grey,
-        showSelectedLabels: true,
-        showUnselectedLabels: true,
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.search),
-            label: 'Search',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.add_circle),
-            label: 'Upload',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.video_collection),
-            label: 'Videos',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-
-        currentIndex: 4, // Set the initial index to Home
-        onTap: (index) {
-          // Handle navigation on item tap
-          switch (index) {
-            case 0:
-           Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => HomePage(),
-                  ));
-              break;
-            case 1:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => SearchPage(),
-                  ));
-              // Navigator.pushNamed(context, searchScreenRoute);
-              break;
-            case 2:
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => UploadPostPage(),
-                  ));
-              // Navigator.pushNamed(context, uploadScreenRoute);
-              break;
-            case 3:
-              // Navigator.pushNamed(context, videosScreenRoute);
-              break;
-            case 4:
-              // Navigator.pushNamed(context, profileScreenRoute);
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfilePage(),
-                  ));
-              break;
-          }
-        },
+ bottomNavigationBar: CustomBottomNavigationBar(
+        currentIndex: 4,
       ),
+
 
     );
   }

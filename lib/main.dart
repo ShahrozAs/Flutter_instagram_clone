@@ -25,11 +25,11 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
       seedColor: Colors.white,
-      // ···
+    
     
     ),
       ),
-      title: 'Flutter Demo',
+      title: 'Instagram',
       home:const SplashScreen(),
     );
   }
